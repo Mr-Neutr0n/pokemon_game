@@ -307,6 +307,18 @@ class Display:
         
         print("└─────────────────────────┘")
     
+    def show_pokedex_summary(self, seen_count: int, caught_count: int):
+        """Display Pokedex summary"""
+        total_pokemon = 151  # Original 151 Pokemon
+        seen_percentage = (seen_count / total_pokemon) * 100
+        caught_percentage = (caught_count / total_pokemon) * 100
+        
+        print(f"\n┌─ Pokedex Summary ─┐")
+        print(f"│ Pokemon Seen: {seen_count}/{total_pokemon} ({seen_percentage:.1f}%)")
+        print(f"│ Pokemon Caught: {caught_count}/{total_pokemon} ({caught_percentage:.1f}%)")
+        print(f"│ Completion: {caught_percentage:.1f}%")
+        print("└───────────────────┘")
+    
     def wrap_text(self, text: str, width: int) -> List[str]:
         """Wrap text to specified width"""
         words = text.split()

@@ -356,7 +356,7 @@ class GameEngine:
                         item_choice = self.input_handler.get_item_choice(healing_items)
                         if item_choice:
                             # Use healing item
-                            if self.trainer.inventory.use_item(item_choice, player_pokemon):
+                            if self.trainer.use_item(item_choice, player_pokemon):
                                 self.display.show_message(f"Used {item_choice} on {player_pokemon.nickname}!")
                             else:
                                 self.display.show_message("Cannot use that item right now.")
@@ -710,7 +710,7 @@ class GameEngine:
                 location=self.trainer.current_location,
                 date_earned=datetime.now()
             )
-            self.trainer.earn_badge(badge)
+            self.trainer.badges.append(badge)
             
             # Award prize money
             prize_money = gym_info["prize_money"]
@@ -789,7 +789,15 @@ class GameEngine:
         if not items:
             self.display.show_message("Your bag is empty!")
         else:
-            self.display.show_inventory(items)
+            self.display.show_message("Your Bag:")
+            self.display.show_message("-" * 30)
+            
+            for item_name, quantity in items.items():
+                item_db = self.trainer.inventory.get_item_database()
+                description = item_db.get(item_name, {}).get("description", "Unknown item")
+                self.display.show_message(f"  {item_name} x{quantity} - {description}")
+            
+            self.display.show_message("-" * 30)
         
         self.input_handler.wait_for_input("Press Enter to continue...")
     
@@ -801,9 +809,21 @@ class GameEngine:
         self.display.show_pokedex_summary(seen_count, caught_count)
         
         if self.trainer.pokedex_caught:
-            self.display.show_message("Caught Pokemon:")
+            self.display.show_message("\nPokemon You've Caught:")
+            self.display.show_message("-" * 30)
             for species in sorted(self.trainer.pokedex_caught):
                 self.display.show_message(f"  {species}")
+            self.display.show_message("-" * 30)
+        else:
+            self.display.show_message("\nYou haven't caught any Pokemon yet!")
+        
+        if self.trainer.pokedex_seen:
+            self.display.show_message("\nPokemon You've Seen:")
+            self.display.show_message("-" * 30)
+            for species in sorted(self.trainer.pokedex_seen):
+                if species not in self.trainer.pokedex_caught:
+                    self.display.show_message(f"  {species} (Seen only)")
+            self.display.show_message("-" * 30)
         
         self.input_handler.wait_for_input("Press Enter to continue...")
     
