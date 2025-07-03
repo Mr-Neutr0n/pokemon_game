@@ -1,0 +1,18 @@
+# Pokemon Game Requirements
+# This game uses only Python standard library modules
+# No external dependencies required
+
+# The game uses the following standard library modules:
+# - os (for file operations)
+# - sys (for system operations)
+# - json (for save file handling)
+# - random (for game mechanics)
+# - time (for timing and delays)
+# - datetime (for timestamps)
+# - typing (for type hints)
+# - enum (for enumerations)
+# - dataclasses (for data structures)
+# - re (for regular expressions)
+
+# Python version requirement
+python>=3.7 
